@@ -1,0 +1,60 @@
+<!doctype html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>notation</title>
+</head>
+<body>
+<style type="text/css">
+table { width: 100%; }
+    table tr td { vertical-align: center; border: 1px solid #777; padding: 4px; }
+        table tr td:first-child { font-style: italic; }
+ul { margin: 0; }
+ul li { list-style-type: none; }
+</style>
+<table>
+    <tr>
+        <th> Example </th>
+        <th> Value </th>
+        <th> Description </th>
+    </tr>
+    <tr>
+        <td> var spa = (function ( $ ) { </td>
+        <td> Module pattern </td>
+        <td> Самовыполняющиеся анонимные функции, паттерн модуля </td>
+    </tr>
+        <td>var <br />
+            <ul>
+                <li>configMap = {</li>
+                <li>
+                    <ul>
+                        <li>extended_height : 434,</li>
+                        <li>extended_title : 'Click to retract',</li>
+                        <li>retracted_height : 16,</li>
+                        <li>retracted_title : 'Click to extend',</li>
+                        <li>template_html : '&lt;div class="spa-slider"&gt;&lt;/div&gt;' </li>
+                    </ul>
+                </li>
+            </ul>
+        </td>
+        <td> Scope </td>
+        <td> Прототипическое наследование, понятие переменных, область видимости переменной </td>
+    </tr>
+    <tr>
+        <td> initModule = function ( $container ) { </td>
+        <td> Closure </td>
+        <td> Анонимные функции, паттерн модуля, замыкания </td>
+    </tr>
+    <tr>
+        <td> return { initModule : initModule }; </td>
+        <td> Execution-context </td>
+        <td> Паттерн модуля, цепочка контекстов </td>
+    </tr>
+    <tr>
+        <td> }( jQuery )); </td>
+        <td> Anonymous self-invoking function </td>
+        <td> Самовыполняющиеся анонимные функции </td>
+    </tr>
+</table>
+</body>
+</html>
