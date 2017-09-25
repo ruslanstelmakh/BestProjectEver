@@ -1,4 +1,5 @@
 "# BestProjectEver"
 
-used "node_modules":
+node_modules:
     jslint
+;
