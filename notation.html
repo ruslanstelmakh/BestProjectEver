@@ -11,6 +11,10 @@ table { width: 100%; }
         table tr td:first-child { font-style: italic; }
 ul { margin: 0; }
 ul li { list-style-type: none; }
+h4, p { margin: 6px 0 0; }
+p { text-indent: 20px; }
+blockquote { border-bottom: 1px solid #777; }
+span { font-family: monospace; }
 </style>
 <table>
     <tr>
@@ -56,5 +60,53 @@ ul li { list-style-type: none; }
         <td> Самовыполняющиеся анонимные функции </td>
     </tr>
 </table>
+
+<blockquote>
+<h4>Литеральные объекты</h4>
+<p>
+    Литеральный объект – это объект, определенный в виде списка атрибутов,
+перечисленных через запятую и заключенных в фигурные скобки. Значе-
+ние атрибута отделяется от имени двоеточием, а не знаком равенства.
+Литеральные объекты могут также содержать массивы, представленные
+в виде списка элементов, перечисленных через запятую и заключенных
+в квадратные скобки. Для определения методов в качестве значения од-
+ного из атрибутов задается функция.
+</p>
+<xmp>var spa = {
+    title: "Single Page Web Applications", //атрибут
+    authors: [ "Mike Mikowski", "Josh Powell" ], //массив
+    buy_now: function () { //функция
+        console.log( "Book is purchased" );
+    }
+}</xmp>
+</blockquote>
+<blockquote>
+<h4>Глобальные переменные и объект window</h4>
+<p>
+    То, что мы привыкли называть глобальными переменными, – на самом
+    деле свойства объекта верхнего уровня, представляющего среду выпол-
+    нения. В браузере таковым является объект <span>window</span> ; в Node.js – объект
+    <span>global</span>, и область видимости переменных работает по-разному.
+    Объект <span>window</span> содержит много свойств, которые сами по себе содер-
+    жат объекты, методы (<span>onload , onresize , alert , close ...</span>), элементы DOM
+    (<span>document , frames ...</span>), а также другие переменные. Доступ ко всем этим
+    свойствам осуществляется с помощью синтаксиса <span>window.property</span>.
+</p>
+<xmp>window.onload = function(){
+       window.alert('window loaded');
+}</xmp>
+<p>
+    Объект верхнего уровня в Node.js называется <span>global</span>. Поскольку Node.
+    js – веб-сервер, а не браузер, множество доступных функций и свойств
+    существенно отличается.
+    Когда интерпретатор JavaScript, работающий в браузере, проверяет су-
+    ществование глобальной переменной, он просматривает объект <span>window</span>.
+</p>
+<xmp>var regular_joe = 'Глобальная переменная';
+    console.log( regular_joe ); // 'Глобальная переменная'
+    console.log( window.regular_joe ); // 'Глобальная переменная'
+    console.log( regular_joe === window.regular_joe ); // true
+</xmp>
+</blockquote>
 </body>
 </html>
