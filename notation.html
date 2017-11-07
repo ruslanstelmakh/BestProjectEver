@@ -164,6 +164,62 @@ var secondPrisoner = makePrisoner( 'Sam', '2BC' );
         функциям в качестве аргументов.
     </p>
 </blockquote>
-
+<blockquote>
+    <h4>
+        Паттерн модуля
+    </h4>
+    <p>
+        Самовыполняющаяся функция выполняется немедленно и возвращает объект
+        со свойствами <span>prisoner</span> и <span>sentence</span>. Сама
+        анонимная функция не сохраняется в переменной <span>prison</span>, она уже выполнена,
+        а в переменной <span>prison</span> сохранено возвращенное ей значение.
+        В глобальную область видимости мы помещаем не две
+        переменные, <span>prisoner_name</span> и <span>jail_term</span>, а только одну, <span>prison</span>.
+    </p>
+<xmp>var prison = (function(){
+    var prisoner_name = "Майк Миковски",
+    jail_term = 'срок 20 лет';
+    return {
+        prisoner: prisoner_name + ' - ' + jail_term,
+        sentence: jail_term
+    }
+})();
+console.log(prison.prisoner_name); //underfined
+console.log(prison.prisoner); //Майк Миковски - срок 20 лет
+console.log(prison.sentence); //срок 20 лет
+</xmp>
+    <p>
+        Атрибуты устанавливаются один раз, когда анонимная функция выполняется,
+        и больше никогда не изменяются. Чтобы их можно было изменить, мы должны преобразовать атрибуты
+        в методы, которые обращаются к переменным.
+    </p>
+<xmp>var prison = (function () {
+    var prisoner_name = 'Mike Mikowski',
+    jail_term = 'срок 20 лет';
+    //Возвращается объект с двумя методами
+    return {
+        //При каждом вызове функция prisoner() читает переменные prisoner_name и jail_term
+        prisoner: function () {
+            return prisoner_name + ' – ' + jail_term;
+        },
+        //При каждом вызове функция setJailTerm() находит и изменяет переменную jail_term
+        setJailTerm: function ( term ) {
+            jail_term = term;
+        }
+    };
+})();
+// выводится 'Майк Миковски – срок 20 лет'
+console.log( prison.prisoner() );
+prison.setJailTerm( 'Срок наказания сокращен' );
+// теперь здесь выводится 'Срок наказания сокращен'
+console.log( prison.prisoner() );
+</xmp>
+    <p>Хотя самовыполняющаяся функция завершилась, переменные
+        <span>prisoner_name</span> и <sapn>jail_term</sapn> остаются доступными
+        методам <span>prisoner</span> и <span>setJailTerm</span>. Теперь они выступают в роли
+        закрытых атрибутов объекта <span>prison</span>. Обратиться к ним можно только с помощью
+        методов объкта, возвращенного анонимной функцией.
+    </p>
+</blockquote>
 </body>
 </html>

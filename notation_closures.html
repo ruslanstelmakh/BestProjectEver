@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SPA Chapter 1 section 1.2.5</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+<style>
+    h4, p { margin: 6px 0 10px; }
+    p { text-indent: 20px; }
+    blockquote { border-bottom: 1px solid #777; }
+    xmp { margin: 10px; }
+    span { font-family: monospace; }
+</style>
+<h4>
+    Примеры замыканий
+</h4>
+    <blockquote>
+        Замыкание создается, когда функция, имеющая доступ к переменной в текущем контексте
+        выполнения, вызывается вне этого контекста.
+    </blockquote>
+<script>
+    //first example
+    console.log('first example');
+    var prison = (function () {
+        var prisoner = 'Джош Пауэлл';
+        return { prisoner: prisoner };
+    })();
+    // выводится 'Джош Пауэлл'
+    console.log( prison.prisoner );
+
+    //second example
+    console.log('second example');
+    var prison = (function () {
+        var prisoner = 'Джош Пауэлл';
+        return {
+            prisoner: function () {
+                return prisoner;
+            }
+        }
+    })();
+    // выводится 'Джош Пауэлл'
+    console.log( prison.prisoner() );
+
+    //third example
+    var makePrison = function ( prisoner ) {
+        return function () {
+            return prisoner;
+        }
+    };
+    var joshPrison = makePrison( 'Джош Пауэлл' );
+    var mikePrison = makePrison( 'Майк Миковски' );
+    // выводится 'Джош Пауэлл', переменная prisoner сохранена в замыкании.
+    // Замыкание создано, потому что функция makePrison возвращает анонимную
+    // функцию, которая обращается к переменной prisoner.
+    console.log( joshPrison() );
+    // выводится 'Майк Миковски', переменная prisoner сохранена в замыкании.
+    // Замыкание создано, потому что функция makePrison возвращает анонимную
+    // функцию, которая обращается к переменной prisoner.
+    console.log( mikePrison() );
+
+    //fourth example
+    var prison = {
+        names: 'Майк Миковски и Джош Пауэлл',
+        who: function () {
+            return this.names;
+        }
+    };
+    // возвращает 'Майк Миковски и Джош Пауэлл'
+    prison.who();
+</script>
+<blockquote>
+    В следующем примере замыкание создается, потому что <span>this</span> сохраняется в переменной <span>that</span>,
+    а доступ к <span>that</span> производится из функции, которая выполняется после возврата Ajax-вызова.
+    Ajax-вызов асинхронный, поэтому ответ приходит, когда программа уже вышла из контекста выполнения,
+    в котором этот вызов был сделан.
+</blockquote>
+<script>
+    //fifth example
+    var prison = {
+        names: 'Mike Mikowski and Josh Powell',
+        who: function () {
+            var that = this;
+            $.ajax({
+                success: function () {
+                    console.log( that.names );
+                }
+            });
+        }
+    };
+    // выводится 'Майк Миковски и Джош Пауэлл'
+    prison.who();
+</script>
+<blockquote>
+    Но хотя метод <span>who()</span> и завершился к моменту возврата Ajax-вызова, переменная <span>that</span>
+    не была удалена сборщиком мусора и остается доступной методу success. Хочется надеяться,
+    что наше объяснение замыканий помогло вам понять, что это такое и как они работают.
+    И теперь мы можем копнуть глубже и разобраться в том, как замыкания реализованы.
+</blockquote>
+</body>
+</html>

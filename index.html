@@ -4,6 +4,7 @@
     <title>SPA Chapter 1 section 1.2.5</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
@@ -35,17 +36,16 @@ body {
     background-color: #777;
 }
 </style>
-<script type="text/javascript">
-    var eatFunction = function (what_to_eat) {
-        var sentence='Я собираюсь съесть ' + what_to_eat;
-        console.log( sentence );
+
+<script>
+    var makePrisoner = function( prisoner ){
+        return function() {
+            return prisoner;
+        }
     };
-    eatFunction( 'бутерброд' );
-    // то же самое, что
-    (function (what_to_eat) {
-        var sentence = 'Я собираюсь съесть ' + what_to_eat;
-        console.log(sentence);
-    })('бутерброд');
+    var joshPrison = makePrisoner( 'Josh' );
+    var ruslanStelmakh = makePrisoner( 'Ruslan' );
+
 </script>
 <div id="spa"></div>
 </body>
