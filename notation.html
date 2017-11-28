@@ -2,6 +2,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./img/favicon.ico" type="image/x-icon">
     <title>notation</title>
 </head>
 <body>
@@ -11,9 +13,10 @@ table { width: 100%; }
         table tr td:first-child { font-style: italic; }
 ul { margin: 0; }
 ul li { list-style-type: none; }
-h4, p { margin: 6px 0 0; }
+h4, p { margin: 6px 0 10px; }
 p { text-indent: 20px; }
 blockquote { border-bottom: 1px solid #777; }
+xmp { margin: 10px; }
 span { font-family: monospace; }
 </style>
 <table>
@@ -81,32 +84,180 @@ span { font-family: monospace; }
 }</xmp>
 </blockquote>
 <blockquote>
-<h4>Глобальные переменные и объект window</h4>
-<p>
-    То, что мы привыкли называть глобальными переменными, – на самом
-    деле свойства объекта верхнего уровня, представляющего среду выпол-
-    нения. В браузере таковым является объект <span>window</span> ; в Node.js – объект
-    <span>global</span>, и область видимости переменных работает по-разному.
-    Объект <span>window</span> содержит много свойств, которые сами по себе содер-
-    жат объекты, методы (<span>onload , onresize , alert , close ...</span>), элементы DOM
-    (<span>document , frames ...</span>), а также другие переменные. Доступ ко всем этим
-    свойствам осуществляется с помощью синтаксиса <span>window.property</span>.
-</p>
+    <h4>Глобальные переменные и объект window</h4>
+    <p>
+        То, что мы привыкли называть глобальными переменными, – на самом
+        деле свойства объекта верхнего уровня, представляющего среду выполнения.
+        В браузере таковым является объект <span>window</span> ; в Node.js – объект
+        <span>global</span>, и область видимости переменных работает по-разному.
+        Объект <span>window</span> содержит много свойств, которые сами по себе содержат
+        объекты, методы (<span>onload , onresize , alert , close ...</span>), элементы DOM
+        (<span>document , frames ...</span>), а также другие переменные. Доступ ко всем этим
+        свойствам осуществляется с помощью синтаксиса <span>window.property</span>.
+    </p>
 <xmp>window.onload = function(){
-       window.alert('window loaded');
+    window.alert('window loaded');
 }</xmp>
 <p>
     Объект верхнего уровня в Node.js называется <span>global</span>. Поскольку Node.
     js – веб-сервер, а не браузер, множество доступных функций и свойств
     существенно отличается.
-    Когда интерпретатор JavaScript, работающий в браузере, проверяет су-
-    ществование глобальной переменной, он просматривает объект <span>window</span>.
+    Когда интерпретатор JavaScript, работающий в браузере, проверяет существование
+    глобальной переменной, он просматривает объект <span>window</span>.
 </p>
 <xmp>var regular_joe = 'Глобальная переменная';
     console.log( regular_joe ); // 'Глобальная переменная'
     console.log( window.regular_joe ); // 'Глобальная переменная'
     console.log( regular_joe === window.regular_joe ); // true
 </xmp>
+</blockquote>
+<blockquote>
+    <h4>
+        Использование <span>Object.create</span> для создания объектов.
+    </h4>
+    <p>
+        В качестве альтернативы оператору <span>new</span> был разработан метод
+        <span>Object.create</span>. Метод <span>Object.create</span> принимает прототип в качестве аргумента и
+        возвращает объект; таким образом, можно определить объект-прототип с общими атрибутами и методами и
+        использовать его для создания других объектов с такими же свойствами.
+    </p>
+<xmp>var proto = {
+    sentence : 4,
+    probation : 2
+};
+var firstPrisoner = Object.create( proto );
+firstPrisoner.name = 'Joe';
+firstPrisoner.id = '12A';
+var secondPrisoner = Object.create( proto );
+secondPrisoner.name = 'Sam';
+secondPrisoner.id = '2BC';
+console.log(firstPrisoner.sentence);
+console.log(secondPrisoner.probation);
+</xmp>
+    <p>
+        Существует и другой, тоже широко распространенный, подход к использованию
+        <span>Object.create</span> – написать с его помощью фабричную функцию, которая создает и возвращает объект.
+    </p>
+<xmp>var proto = {
+    sentence : 4,
+    probation : 2
+};
+var makePrisoner = function( name, id ) { // makePrisoner – фабричная функция, она создает объекты prisoner
+    var prisoner = Object.create( proto ); // Само создание объекта производится так же,
+    prisoner.name = name;                     как в листинге выше,
+    prisoner.id = id;                         просто оно обернуто фабричной функцией.
+    return prisoner;
+};
+// Теперь для создания новых объектов достаточно вызвать функцию makePrisoner, передав ей атрибуты свойств.
+var firstPrisoner = makePrisoner( 'Joe', '12A' );
+var secondPrisoner = makePrisoner( 'Sam', '2BC' );
+</xmp>
+    <p><i>Если свойство отсутствует у самого объекта, то проверяется его наличие в прототипе</i></p>
+</blockquote>
+<blockquote>
+    <h4>
+        Функции
+    </h4>
+    <p>
+        Функции в JavaScript – полноправные объекты. Их можно хранить
+        в переменных, присваивать атрибутам и даже передавать другим
+        функциям в качестве аргументов.
+    </p>
+</blockquote>
+<blockquote>
+    <h4>
+        Паттерн модуля
+    </h4>
+    <p>
+        Самовыполняющаяся функция выполняется немедленно и возвращает объект
+        со свойствами <span>prisoner</span> и <span>sentence</span>. Сама
+        анонимная функция не сохраняется в переменной <span>prison</span>, она уже выполнена,
+        а в переменной <span>prison</span> сохранено возвращенное ей значение.
+        В глобальную область видимости мы помещаем не две
+        переменные, <span>prisoner_name</span> и <span>jail_term</span>, а только одну, <span>prison</span>.
+    </p>
+<xmp>var prison = (function(){
+    var prisoner_name = "Майк Миковски",
+    jail_term = 'срок 20 лет';
+    return {
+        prisoner: prisoner_name + ' - ' + jail_term,
+        sentence: jail_term
+    }
+})();
+console.log(prison.prisoner_name); //underfined
+console.log(prison.prisoner); //Майк Миковски - срок 20 лет
+console.log(prison.sentence); //срок 20 лет
+</xmp>
+    <p>
+        Атрибуты устанавливаются один раз, когда анонимная функция выполняется,
+        и больше никогда не изменяются. Чтобы их можно было изменить, мы должны преобразовать атрибуты
+        в методы, которые обращаются к переменным.
+    </p>
+<xmp>var prison = (function () {
+    var prisoner_name = 'Mike Mikowski',
+    jail_term = 'срок 20 лет';
+    //Возвращается объект с двумя методами
+    return {
+        //При каждом вызове функция prisoner() читает переменные prisoner_name и jail_term
+        prisoner: function () {
+            return prisoner_name + ' – ' + jail_term;
+        },
+        //При каждом вызове функция setJailTerm() находит и изменяет переменную jail_term
+        setJailTerm: function ( term ) {
+            jail_term = term;
+        }
+    };
+})();
+// выводится 'Майк Миковски – срок 20 лет'
+console.log( prison.prisoner() );
+prison.setJailTerm( 'Срок наказания сокращен' );
+// теперь здесь выводится 'Срок наказания сокращен'
+console.log( prison.prisoner() );
+</xmp>
+    <p>Хотя самовыполняющаяся функция завершилась, переменные
+        <span>prisoner_name</span> и <span>jail_term</span> остаются доступными
+        методам <span>prisoner</span> и <span>setJailTerm</span>. Теперь они выступают в роли
+        закрытых атрибутов объекта <span>prison</span>. Обратиться к ним можно только с помощью
+        методов объкта, возвращенного анонимной функцией.
+    </p>
+</blockquote>
+<blockquote>
+    <h4>
+        Замыкания
+    </h4>
+    <p>
+        Замыкание создается, когда функция, имеющая доступ к переменной в текущем контексте
+        выполнения, вызывается вне этого контекста.
+    </p>
+<xmp>var menu, outer_function,
+    food = 'cake';
+outer_function = function () {
+    var fruit, inner_function;
+        fruit = 'apple';
+    inner_function = function () {
+        return { food: food, fruit: fruit }
+    };
+    return inner_function;
+};
+menu = outer_function();
+//Возвращается { food: 'cake', fruit: 'apple' }
+menu();
+</xmp>
+    <p>
+        При выполнении <span>outer_function</span> создается контекст выполнения.
+        <span>inner_function</span> определена внутри этого контекста.
+        Поскольку <span>inner_function</span> определена внутри контекста выполнения
+        <span>outer_function</span>, она имеет доступ ко всем переменным в области видимости
+        <span>outer_function</span> – в данном случае <span>food</span>, <span>fruit</span>,
+        <span>outer_function</span>, <span>inner_function</span> и <span>menu</span>.
+        Если вы думаете, что после завершения <span>outer_function</span> все находящееся внутри ее
+        контекста выполнения уничтожается сборщиком мусора, то вы неправы.
+        Уничтожения не происходит, потому что ссылка на <span>inner_function</span> сохранена в
+        переменной menu, определенной в глобальной области видимости. Поскольку <span>inner_function</span>
+        должна сохранить доступ ко всем переменным, которые находились в области видимости,
+        когда она была объявлена, то она «замыкает» контекст выполнения <span>outer_function</span>,
+        чтобы не дать сборщику мусора удалить его. Это и есть замыкание.
+    </p>
 </blockquote>
 </body>
 </html>

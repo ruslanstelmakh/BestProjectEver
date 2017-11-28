@@ -1,51 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>SPA Chapter 1 section 1.2.5</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <title>SPA Chapter 1 section 1.2.5</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
 <style type="text/css">
 body {
-    width : 100%;
-    height : 100%;
-    overflow : hidden;
-    background-color : #777;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #777;
 }
 #spa {
-    position : absolute;
-    top : 8px;
-    left : 8px;
-    bottom : 8px;
-    right : 8px;
-    border-radius : 8px 8px 0 8px;
-    background-color : #fff;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    bottom: 8px;
+    right: 8px;
+    border-radius: 8px 8px 0 8px;
+    background-color: #fff;
 }
 .spa-slider {
-    position : absolute;
-    bottom : 0;
-    right : 0;
-    width : 300px;
-    height : 16px;
-    cursor : pointer;
-    border-radius : 8px 0 0 0;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    height: 16px;
+    cursor: pointer;
+    border-radius: 8px 0 0 0;
     border: 1px solid #fff;
-    background-color : #777;
+    background-color: #777;
 }
 </style>
-<script type="text/javascript">
-var regular_joe = 'I am here to save the day!';
-console.log(regular_joe);
-function supermax(){
-    console.log(regular_joe);
-    function prison () {
-        console.log(regular_joe);
-    }
-    prison();
-}
-supermax();
+<script>
+var menu, outer_function,
+    food = 'cake';
+outer_function = function () {
+    var fruit, inner_function;
+        fruit = 'apple';
+    inner_function = function () {
+        return { food: food, fruit: fruit }
+    };
+    return inner_function;
+};
+menu = outer_function();
+$(document).ready(function () {
+    console.log(menu());
+});
 </script>
 <div id="spa"></div>
 </body>
