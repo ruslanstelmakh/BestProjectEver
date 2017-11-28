@@ -215,10 +215,48 @@ prison.setJailTerm( 'Срок наказания сокращен' );
 console.log( prison.prisoner() );
 </xmp>
     <p>Хотя самовыполняющаяся функция завершилась, переменные
-        <span>prisoner_name</span> и <sapn>jail_term</sapn> остаются доступными
+        <span>prisoner_name</span> и <span>jail_term</span> остаются доступными
         методам <span>prisoner</span> и <span>setJailTerm</span>. Теперь они выступают в роли
         закрытых атрибутов объекта <span>prison</span>. Обратиться к ним можно только с помощью
         методов объкта, возвращенного анонимной функцией.
+    </p>
+</blockquote>
+<blockquote>
+    <h4>
+        Замыкания
+    </h4>
+    <p>
+        Замыкание создается, когда функция, имеющая доступ к переменной в текущем контексте
+        выполнения, вызывается вне этого контекста.
+    </p>
+<xmp>var menu, outer_function,
+    food = 'cake';
+outer_function = function () {
+    var fruit, inner_function;
+        fruit = 'apple';
+    inner_function = function () {
+        return { food: food, fruit: fruit }
+    };
+    return inner_function;
+};
+menu = outer_function();
+//Возвращается { food: 'cake', fruit: 'apple' }
+menu();
+</xmp>
+    <p>
+        При выполнении <span>outer_function</span> создается контекст выполнения.
+        <span>inner_function</span> определена внутри этого контекста.
+        Поскольку <span>inner_function</span> определена внутри контекста выполнения
+        <span>outer_function</span>, она имеет доступ ко всем переменным в области видимости
+        <span>outer_function</span> – в данном случае <span>food</span>, <span>fruit</span>,
+        <span>outer_function</span>, <span>inner_function</span> и <span>menu</span>.
+        Если вы думаете, что после завершения <span>outer_function</span> все находящееся внутри ее
+        контекста выполнения уничтожается сборщиком мусора, то вы неправы.
+        Уничтожения не происходит, потому что ссылка на <span>inner_function</span> сохранена в
+        переменной menu, определенной в глобальной области видимости. Поскольку <span>inner_function</span>
+        должна сохранить доступ ко всем переменным, которые находились в области видимости,
+        когда она была объявлена, то она «замыкает» контекст выполнения <span>outer_function</span>,
+        чтобы не дать сборщику мусора удалить его. Это и есть замыкание.
     </p>
 </blockquote>
 </body>
