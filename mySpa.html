@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SPA Chapter 1 section 1.2.5</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+<style type="text/css">
+	body {
+		background: #eaeaea;
+	}
+	#mySpa, .spa-inner {
+		position: absolute;
+		border-radius: 50%;
+		left: 50%;
+		top: 50%;
+	}
+	#mySpa {
+		width: 400px;
+		height: 400px;
+		background: #d0d0d0;
+		margin-left: -200px;
+		margin-top: -200px;
+	}
+	.spa-inner {
+		width: 50%;
+		height: 50%;
+		background: #b1b1b1;
+		margin-left: -25%;
+		margin-top: -25%;
+		cursor: pointer;
+	}
+	.toggled {
+		animation: toggleInner 2s forwards;
+	}
+	.untoggled {
+		animation: untoggleInner 1s forwards;
+	}
+	@keyframes toggleInner {
+		0% {
+			width: 50%;
+			height: 50%;
+			background: #b1b1b1;
+			margin-left: -25%;
+			margin-top: -25%;
+		}
+		100% {
+			width: 100%;
+			height: 100%;
+			background: #d0d0d0;
+			left: 0;
+			top: 0;
+			margin: 0;
+		}
+	}
+	@keyframes untoggleInner {
+		0% {
+			width: 100%;
+			height: 100%;
+			background: #d0d0d0;
+			left: 0;
+			top: 0;
+			margin: 0;
+		}
+		100% {
+			width: 50%;
+			height: 50%;
+			background: #b1b1b1;
+			margin-left: -25%;
+			margin-top: -25%;
+		}
+	}
+</style>
+
+<script type="text/javascript">
+	var mySpa = (function ( $ ) {
+		// переменные модуля
+		var
+			// константы
+			configInner = {
+				templateInner : '<div class="spa-inner"></div>',
+				innerParrentWidth : ''
+			},
+			// прочие переменные
+			toggleInner, onClick, initInner;
+		// Метод DOM 'toggleInner' анимерует содержимое 'teamplateInner'
+		toggleInner = function () {
+			var inner_width = $inner.width();
+			// расширить содержимое если оно в начальном позиционировании
+			if ( inner_width === configInner.innerParrentWidth / 2 ) {
+				$inner.removeClass('untoggled').addClass('toggled');
+				return true;
+			// свернуть
+			} else if ( inner_width === configInner.innerParrentWidth ) {
+				$inner.removeClass('toggled').addClass('untoggled');
+				return true;
+			}
+			// ничего не делать если анимация в процессе
+			return false;
+		};
+		// Обработчик события 'onClick'
+		// получает событие щелчка и вызывает 'toggleInner'
+		onClick = function ( event ) {
+			toggleInner();
+			return false;
+		};
+
+		/*Помещаем все открытые методы в одну секцию. Добавляем код, который помещает в $container
+		шаблон HTML-разметки окна чата.*/
+
+		// Открытый метод /initModule/
+		// устанавливает начальное состояние и предоставляет функциональность
+		//
+		initInner = function ( $container ) {
+
+			// отрисовать HTML
+			$container.html(configInner.templateInner);
+
+			/*Находим div выплывающего чата и сохраняем его в переменной $chatSlider в области видимости модуля.
+			Переменные в области видимости модуля доступны только функциям из пространства имен spa.*/
+
+			configInner.innerParrentWidth = $container.width();
+
+			$inner = $container.find('.spa-inner');
+			// инициализировать высоту и описание окна чата
+			// привязать обработчик к событию щелчка мышью
+
+			/*Устанавливаем заголовок выплывающего окна и привязывываем обработчик onClick
+			к событию щелчка по окну чата.*/
+			$inner
+				.click(onClick);
+			return true;
+		};
+
+		/*Экспортируем открытые методы, возвращая объект из пространства имен spa.
+		Мы экспортируем только один метод initInner.*/
+
+		return { initInner : initInner};
+	}( jQuery ));
+
+	// запустить spa, когда модель DOM будет готова
+	//
+
+	/*Запускаем SPA только после того, как модель DOM будет готова к работе, пользуясь для этого
+	методом ready из библиотеки jQuery.*/
+
+	jQuery(document).ready(
+		function () { mySpa.initInner( $('#mySpa') ); }
+	)
+</script>
+<div id="mySpa"></div>
+</body>
+</html>
